@@ -106,8 +106,12 @@ def generate_mesh_packet(encoded_message: mesh_pb2.Data, **kwargs) -> bytes:
     mesh_packet.to = int(destination)
     mesh_packet.want_ack = kwargs.get("want_ack", False)
     mesh_packet.channel = generate_hash(channel_id, channel_key)
-    mesh_packet.hop_limit = kwargs.get("hop_limit", 3)
-    mesh_packet.hop_start = kwargs.get("hop_start", 3)
+    hop_limit = kwargs.get("hop_limit", 3)
+    hop_start = kwargs.get("hop_start", 3)
+    if hop_limit > hop_start:
+        hop_start = hop_limit
+    mesh_packet.hop_limit = hop_limit
+    mesh_packet.hop_start = hop_start
 
     if channel_key == "":
         mesh_packet.decoded.CopyFrom(encoded_message)
@@ -150,10 +154,14 @@ def send_nodeinfo(id: int = None, long_name: str = None, short_name: str = None,
         }
         # Filter out None values and remove keys we've already handled
         reserved_keys = {"node_id", "long_name", "short_name"}
-        data = {k: v for k, v in kwargs.items() if v is not None and k not in reserved_keys}
+        data = {
+            k: v
+            for k, v in kwargs.items()
+            if v is not None and k not in reserved_keys and k in mesh_pb2.User.DESCRIPTOR.fields_by_name
+        }
         nodeinfo_fields.update(data)
 
-        return create_payload(mesh_pb2.User(**nodeinfo_fields), portnum)
+        return create_payload(mesh_pb2.User(**nodeinfo_fields), portnum, **kwargs)
 
     publish_message(
         create_nodeinfo_payload, portnums_pb2.NODEINFO_APP, id=id, long_name=long_name, short_name=short_name, **kwargs
@@ -173,10 +181,14 @@ def send_position(latitude: float = None, longitude: float = None, **kwargs) -> 
 
         # Filter out None values and remove keys we've already handled
         reserved_keys = {"latitude", "longitude"}
-        data = {k: v for k, v in fields.items() if v is not None and k not in reserved_keys}
+        data = {
+            k: v
+            for k, v in fields.items()
+            if v is not None and k not in reserved_keys and k in mesh_pb2.Position.DESCRIPTOR.fields_by_name
+        }
         position_fields.update(data)
 
-        return create_payload(mesh_pb2.Position(**position_fields), portnum)
+        return create_payload(mesh_pb2.Position(**position_fields), portnum, **kwargs)
 
     publish_message(
         create_position_payload, portnums_pb2.POSITION_APP, latitude=latitude, longitude=longitude, **kwargs
@@ -187,10 +199,14 @@ def send_device_telemetry(**kwargs) -> None:
     """Send telemetry packet including battery, voltage, channel usage, and uptime."""
 
     def create_telemetry_payload(portnum: int, **_):
-        metrics_kwargs = {k: v for k, v in kwargs.items() if v is not None}
+        metrics_kwargs = {
+            k: v
+            for k, v in kwargs.items()
+            if v is not None and k in telemetry_pb2.DeviceMetrics.DESCRIPTOR.fields_by_name
+        }
         metrics = telemetry_pb2.DeviceMetrics(**metrics_kwargs)
         data = telemetry_pb2.Telemetry(time=int(time.time()), device_metrics=metrics)
-        return create_payload(data, portnum)
+        return create_payload(data, portnum, **kwargs)
 
     publish_message(create_telemetry_payload, portnums_pb2.TELEMETRY_APP, **kwargs)
 
@@ -199,10 +215,14 @@ def send_power_metrics(**kwargs) -> None:
     """Send power metrics including voltage and current for three channels."""
 
     def create_power_metrics_payload(portnum: int, **_):
-        metrics_kwargs = {k: v for k, v in kwargs.items() if v is not None}
+        metrics_kwargs = {
+            k: v
+            for k, v in kwargs.items()
+            if v is not None and k in telemetry_pb2.PowerMetrics.DESCRIPTOR.fields_by_name
+        }
         metrics = telemetry_pb2.PowerMetrics(**metrics_kwargs)
         data = telemetry_pb2.Telemetry(time=int(time.time()), power_metrics=metrics)
-        return create_payload(data, portnum)
+        return create_payload(data, portnum, **kwargs)
 
     publish_message(create_power_metrics_payload, portnums_pb2.TELEMETRY_APP, **kwargs)
 
@@ -212,10 +232,14 @@ def send_environment_metrics(**kwargs) -> None:
 
     def create_environment_metrics_payload(portnum: int, **_):
         # Filter out None values from kwargs
-        metrics_kwargs = {k: v for k, v in kwargs.items() if v is not None}
+        metrics_kwargs = {
+            k: v
+            for k, v in kwargs.items()
+            if v is not None and k in telemetry_pb2.EnvironmentMetrics.DESCRIPTOR.fields_by_name
+        }
         metrics = telemetry_pb2.EnvironmentMetrics(**metrics_kwargs)
         data = telemetry_pb2.Telemetry(time=int(time.time()), environment_metrics=metrics)
-        return create_payload(data, portnum)
+        return create_payload(data, portnum, **kwargs)
 
     publish_message(create_environment_metrics_payload, portnums_pb2.TELEMETRY_APP, **kwargs)
 
@@ -224,9 +248,13 @@ def send_health_metrics(**kwargs) -> None:
     """Send health metrics including heart rate, SpO2, and body temperature."""
 
     def create_health_metrics_payload(portnum: int, **_):
-        metrics_kwargs = {k: v for k, v in kwargs.items() if v is not None}
+        metrics_kwargs = {
+            k: v
+            for k, v in kwargs.items()
+            if v is not None and k in telemetry_pb2.HealthMetrics.DESCRIPTOR.fields_by_name
+        }
         metrics = telemetry_pb2.HealthMetrics(**metrics_kwargs)
         data = telemetry_pb2.Telemetry(time=int(time.time()), health_metrics=metrics)
-        return create_payload(data, portnum)
+        return create_payload(data, portnum, **kwargs)
 
     publish_message(create_health_metrics_payload, portnums_pb2.TELEMETRY_APP, **kwargs)
