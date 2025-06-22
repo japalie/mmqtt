@@ -5,9 +5,9 @@ from typing import Callable
 
 from meshtastic import portnums_pb2, mesh_pb2, mqtt_pb2, telemetry_pb2
 
-from mmqtt.encryption import encrypt_packet, generate_hash
+from mmqtt.encryption import encrypt_packet
 from mmqtt.load_config import ConfigLoader
-from mmqtt.utils import get_message_id
+from mmqtt.utils import generate_hash, get_message_id
 
 _config = None
 message_id = random.getrandbits(32)
@@ -122,7 +122,7 @@ def generate_mesh_packet(encoded_message: mesh_pb2.Data, **kwargs) -> bytes:
     mesh_packet.channel = generate_hash(channel_id, channel_key)
     mesh_packet.hop_limit = _overrides['hop_limit'] or kwargs.get("hop_limit", 3)
     mesh_packet.hop_start = _overrides['hop_limit'] or kwargs.get("hop_start", 3)
-    
+
     if channel_key == "":
         mesh_packet.decoded.CopyFrom(encoded_message)
     else:
