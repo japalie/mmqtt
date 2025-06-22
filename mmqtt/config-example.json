@@ -14,7 +14,9 @@
     "id": "!deadbeef",
     "short_name": "q",
     "long_name": "mmqtt",
-    "hw_model": 255
+    "role": "SENSOR",
+    "hw_model": 255,
+    "node_is_unmessagable": 1
   },
   "position": {
     "lat": 45.43139,
@@ -30,8 +32,26 @@
     "airtxutil": 1,
     "uptime": 420
   },
+  "power": {
+    "ch1_voltage": null,
+    "ch1_current": null,
+    "ch2_voltage": null,
+    "ch2_current": null,
+    "ch3_voltage": null,
+    "ch3_current": null
+  },
+  "environment": {
+    "temperature": null,
+    "humidity": null,
+    "pressure": null,
+    "lux": null,
+    "wind_dir": null,
+    "wind_speed": null,
+    "weight": null,
+    "radiation": null
+  },
   "message": {
-    "text": "Happy New Year",
+    "text": "Hello World!",
     "destination_id": "4294967295"
   },
   "mode": {
