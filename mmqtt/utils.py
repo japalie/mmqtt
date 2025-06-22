@@ -34,3 +34,6 @@ def validate_lat_lon_alt(parser, args) -> None:
         # If one of lat lon or pre is provided, ensure lat and lon are provided
         if not (args.lat and args.lon):
             parser.error("If you specify --lat, --lon, or --pre, you must specify both --lat and --lon.")
+
+def str_with_empty(value):
+    return value
