@@ -18,6 +18,9 @@ def start() -> None:
     """Entrypoint for the mmqtt client. Parses args, loads config, and starts the client."""
     _, args = get_args()
     config = ConfigLoader.load_config_file(args.config)
+    if args.channel_preset is not None:
+        config.channel.preset = args.channel_preset
+
     configure(config)
 
     if args.listen:
