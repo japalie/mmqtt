@@ -5,7 +5,7 @@ from types import SimpleNamespace
 from typing import Tuple
 
 from mmqtt.load_config import ConfigLoader
-from mmqtt.utils import validate_lat_lon_alt, str_with_empty
+from mmqtt.utils import validate_lat_lon_alt, str_with_empty, float_or_int
 from mmqtt.tx_message_handler import (
     send_position,
     send_text_message,
@@ -48,26 +48,26 @@ def get_args() -> Tuple[argparse.ArgumentParser, argparse.Namespace]:
     # Position Data
     parser.add_argument('--lat', type=float, help='Latitude coordinate')
     parser.add_argument('--lon', type=float, help='Longitude coordinate')
-    parser.add_argument('--alt', type=float, help='Altitude')
+    parser.add_argument('--alt', type=float_or_int, help='Altitude')
     parser.add_argument('--precision', type=int, help='Position Precision')
     parser.add_argument('--position', action='store_true', help='Send position from config or overridden by --lat/lon/alt')
     # Environment Data
-    parser.add_argument('--temperature', type=float, help='Temperature in °C - float')
-    parser.add_argument('--humidity', type=float, help='Relative Humidity (0.0 - 100.0 %%RH)')
-    parser.add_argument('--pressure', type=float, help='Barometric Pressure in hPa - float')
+    parser.add_argument('--temperature', type=float_or_int, help='Temperature in °C - float')
+    parser.add_argument('--humidity', type=float_or_int, help='Relative Humidity (0.0 - 100.0 %%RH)')
+    parser.add_argument('--pressure', type=float_or_int, help='Barometric Pressure in hPa - float')
     parser.add_argument('--lux', type=float, help='Illuminance in lux - float')
     parser.add_argument('--wind_dir', type=int, help='Wind direction in degrees 360=North')
-    parser.add_argument('--wind_speed', type=float, help='Wind Speed in m/s - float')
-    parser.add_argument('--weight', type=float, help='Weight in kg - float')
-    parser.add_argument('--radiation', type=float, help='Radiation in µR/h (microroentgen/hour) - float')
+    parser.add_argument('--wind_speed', type=float_or_int, help='Wind Speed in m/s - float')
+    parser.add_argument('--weight', type=float_or_int, help='Weight in kg - float')
+    parser.add_argument('--radiation', type=float_or_int, help='Radiation in µR/h (microroentgen/hour) - float')
     parser.add_argument('--environment', action='store_true', help='Send environment from config or overridden by --temperature/humidity/pressure/lux/wind_dir/wind_speed/weight/radiation')
     # Power Data
-    parser.add_argument('--ch1_voltage', type=float, help='CH1 Voltage in V - float')
-    parser.add_argument('--ch1_current', type=float, help='CH1 Current in mA - float')
-    parser.add_argument('--ch2_voltage', type=float, help='CH2 Voltage in V - float')
-    parser.add_argument('--ch2_current', type=float, help='CH2 Current in mA - float')
-    parser.add_argument('--ch3_voltage', type=float, help='CH3 Voltage in V - float')
-    parser.add_argument('--ch3_current', type=float, help='CH3 Current in mA - float')
+    parser.add_argument('--ch1_voltage', type=float_or_int, help='CH1 Voltage in V - float')
+    parser.add_argument('--ch1_current', type=float_or_int, help='CH1 Current in mA - float')
+    parser.add_argument('--ch2_voltage', type=float_or_int, help='CH2 Voltage in V - float')
+    parser.add_argument('--ch2_current', type=float_or_int, help='CH2 Current in mA - float')
+    parser.add_argument('--ch3_voltage', type=float_or_int, help='CH3 Voltage in V - float')
+    parser.add_argument('--ch3_current', type=float_or_int, help='CH3 Current in mA - float')
     parser.add_argument('--power', action='store_true', help='Send power from config or overridden by --ch1_voltage/ch1_current/ch2_voltage/ch2_current/ch3_voltage/ch3_current')
     # Start Listener
     parser.add_argument('--listen', action='store_true', help='Enable listening for incoming MQTT messages')
