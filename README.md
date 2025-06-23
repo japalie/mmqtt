@@ -226,7 +226,7 @@ pip install -e .
 
 
 
-## New Install Mode
+# New Install Mode
 ```bash
 python3 -m venv .venv/meshtastic
 source .venv/meshtastic/bin/activate
