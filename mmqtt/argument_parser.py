@@ -32,6 +32,7 @@ def get_args() -> Tuple[argparse.ArgumentParser, argparse.Namespace]:
     parser.add_argument('--channel_key', type=str_with_empty, help='Channel Encryption Key (Default: AQ==)')
     parser.add_argument('--destination', type=int, help='Destination Node Number (4294967295 is Broadcast)')
     parser.add_argument('--hop_limit', type=str, help='Set hop-limit default: 3 (max: 7)')
+    parser.add_argument('--priority', type=str, help='Message Priority (UNSET/MIN/BACKGROUND/DEFAULT/RALIABLE/HIGH/MAX)')
     # Send Message
     parser.add_argument('--message', action='append', help='Message(s) to send. You can use this multiple times.')
     parser.add_argument('--message-file', type=str, help='Path to a file containing messages, one per line')
@@ -106,6 +107,7 @@ def handle_args() -> argparse.Namespace:
         "channel_key": channel_key,
         "destination": getattr(args, 'destination', None) or None,
         "hop_limit": getattr(args, 'hop_limit', None) or None,
+        "priority": getattr(args, 'priority', None) or None,
     }
 
     for arg in arg_order:
