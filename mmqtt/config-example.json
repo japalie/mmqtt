@@ -16,7 +16,7 @@
     "long_name": "mmqtt",
     "role": "SENSOR",
     "hw_model": 255,
-    "node_is_unmessagable": 1
+    "is_unmessagable": 1
   },
   "position": {
     "lat": 45.43139,
