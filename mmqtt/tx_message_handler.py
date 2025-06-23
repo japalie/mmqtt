@@ -124,7 +124,8 @@ def generate_mesh_packet(encoded_message: mesh_pb2.Data, **kwargs) -> bytes:
     mesh_packet.hop_start = _overrides['hop_limit'] or kwargs.get("hop_start", 3)
 
     if channel_key == "":
-        mesh_packet.decoded.CopyFrom(encoded_message)
+        #mesh_packet.decoded.CopyFrom(encoded_message)
+        mesh_packet.encrypted = encoded_message.SerializeToString()
     else:
         mesh_packet.encrypted = encrypt_packet(channel_id, channel_key, mesh_packet, encoded_message)
 
