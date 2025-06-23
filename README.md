@@ -235,7 +235,7 @@ source .venv/meshtastic/bin/activate
 git clone https://github.com/meshtastic/python
 cd python/
 ../.venv/meshtastic/bin/poetry build
-../.venv/meshtastic/bin/pip install meshtastic*.whl
+../.venv/meshtastic/bin/pip install dist/meshtastic*.whl
 cd ../
 
 git clone https://github.com/japalie/mmqtt/
