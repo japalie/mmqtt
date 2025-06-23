@@ -1,4 +1,4 @@
-Forked from pdxlocations/mmqtt
+Forked from @pdxlocations/mmqtt
 
 This project is useful for testing Meshtastic networks connected to an MQTT server. Functions can be called via the `mmqtt` command or imported and used programmatically.
 
