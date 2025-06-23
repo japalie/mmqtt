@@ -31,7 +31,7 @@ def get_args() -> Tuple[argparse.ArgumentParser, argparse.Namespace]:
     parser.add_argument('--channel_preset', type=str, help='Channel Name')
     parser.add_argument('--channel_key', type=str_with_empty, help='Channel Encryption Key (Default: AQ==)')
     parser.add_argument('--destination', type=int, help='Destination Node Number (4294967295 is Broadcast)')
-    parser.add_argument('--hop_limit', type=str, help='Set hop-limit default: 3 (max: 7)')
+    parser.add_argument('--hop_limit', type=int, help='Set hop-limit default: 3 (max: 7)')
     parser.add_argument('--priority', type=str, help='Message Priority (UNSET/MIN/BACKGROUND/DEFAULT/RALIABLE/HIGH/MAX)')
     # Send Message
     parser.add_argument('--message', action='append', help='Message(s) to send. You can use this multiple times.')
