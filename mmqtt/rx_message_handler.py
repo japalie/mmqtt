@@ -25,12 +25,21 @@ def on_message(client: MQTTClient, userdata: Any, msg: MQTTMessage) -> None:
         return
 
     if mp.HasField("encrypted") and not mp.HasField("decoded"):
-        decoded_data = decrypt_packet(mp, config.channel.key)
-        if decoded_data is not None:
-            mp.decoded.CopyFrom(decoded_data)
+        if config.channel.key == "":
+            try:
+                data = mesh_pb2.Data()
+                data.ParseFromString(mp.encrypted)
+                mp.decoded.CopyFrom(data)
+            except Exception as e:
+                print(f"Failed to decrypt: {e}")
+                return None
         else:
-            print("*** [RX] Failed to decrypt message — decoded_data is None")
-            return
+            decoded_data = decrypt_packet(mp, config.channel.key)
+            if decoded_data is not None:
+                mp.decoded.CopyFrom(decoded_data)
+            else:
+                print("*** [RX] Failed to decrypt message — decoded_data is None")
+                return
     print()
     print("[RX] Message Packet:")
     for line in str(mp).splitlines():
