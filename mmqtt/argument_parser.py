@@ -5,7 +5,7 @@ from types import SimpleNamespace
 from typing import Tuple
 
 from mmqtt.load_config import ConfigLoader
-from mmqtt.utils import validate_lat_lon_alt, str_with_empty, float_or_int
+from mmqtt.utils import validate_lat_lon_alt, str_with_empty, float_or_int, str2bool
 from mmqtt.tx_message_handler import (
     send_position,
     send_text_message,
@@ -27,7 +27,7 @@ def get_args() -> Tuple[argparse.ArgumentParser, argparse.Namespace]:
     parser.add_argument('--node_short_name', type=str, help='Node Short name')
     parser.add_argument('--node_role', type=str, help='Role of Node (CLIENT,REPEATER,ROUTER,TRACKER,SENSOR)')
     parser.add_argument('--node_hw_model', type=int, help='Hardware model number (255 is PRIVATEHW)')
-    parser.add_argument('--node_is_unmessagable', type=bool, help='Node is unmessagable (True / False)')
+    parser.add_argument('--node_is_unmessagable', type=str2bool, help='Node is unmessagable (True / False)')
     parser.add_argument('--channel_preset', type=str, help='Channel Name')
     parser.add_argument('--channel_key', type=str_with_empty, help='Channel Encryption Key (Default: AQ==)')
     parser.add_argument('--destination', type=int, help='Destination Node Number (4294967295 is Broadcast)')
@@ -112,7 +112,15 @@ def handle_args() -> argparse.Namespace:
 
     for arg in arg_order:
         if arg == "--nodeinfo" and args.nodeinfo:
-            node = config.nodeinfo           
+            node = config.nodeinfo 
+
+            if args.node_is_unmessagable == False:
+                is_unmessagable = False
+            elif args.node_is_unmessagable == True:
+                is_unmessagable = True
+            else:
+                is_unmessagable = getattr(node, 'is_unmessagable', None) or None
+            
             #send_nodeinfo(node.id, node.long_name, node.short_name)
             send_nodeinfo(
                 id = getattr(args, 'node_id', None) or getattr(node, 'id', None) or None,
@@ -120,7 +128,7 @@ def handle_args() -> argparse.Namespace:
                 short_name = getattr(args, 'node_short_name', None) or getattr(node, 'short_name', None) or None,
                 hw_model = getattr(args, 'node_hw_model', None) or getattr(node, 'hw_model', None) or None,
                 role = getattr(args, 'node_role', None) or getattr(node, 'role', None) or None,
-                is_unmessagable = getattr(args, 'node_is_unmessagable', None) or getattr(node, 'is_unmessagable', None) or None,
+                is_unmessagable = is_unmessagable,
                 use_config = True,
                 _overrides = _overrides
             )
