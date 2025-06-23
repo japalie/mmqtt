@@ -230,22 +230,22 @@ pip install -e .
 ```bash
 python3 -m venv .venv/meshtastic
 source .venv/meshtastic/bin/activate
-.venv/meshtastic/bin/pip3 install poetry
+./.venv/meshtastic/bin/pip3 install poetry
 
 git clone https://github.com/meshtastic/python
 cd python/
-.venv/meshtastic/bin/poetry build
-.venv/meshtastic/bin/pip install meshtastic*.whl
+../.venv/meshtastic/bin/poetry build
+../.venv/meshtastic/bin/pip install meshtastic*.whl
 cd ../
 
 git clone https://github.com/japalie/mmqtt/
 cd mmqtt
-.venv/meshtastic/bin/poetry build
-.venv/meshtastic/bin/pip install dist/mmqtt*.whl
+../.venv/meshtastic/bin/poetry build
+../.venv/meshtastic/bin/pip install dist/mmqtt*.whl
 cd ../
 ```
 
 Run MMQTT:
 ```
-.venv/meshtastic/bin/python -m mmqtt --help
+./.venv/meshtastic/bin/python -m mmqtt --help
 ````
