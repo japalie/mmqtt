@@ -122,6 +122,7 @@ def generate_mesh_packet(encoded_message: mesh_pb2.Data, **kwargs) -> bytes:
     mesh_packet.channel = generate_hash(channel_id, channel_key)
     mesh_packet.hop_limit = _overrides['hop_limit'] or kwargs.get("hop_limit", 3)
     mesh_packet.hop_start = _overrides['hop_limit'] or kwargs.get("hop_start", 3)
+    mesh_packet.priority = _overrides['priority'] or 'DEFAULT'
 
     if channel_key == "":
         #mesh_packet.decoded.CopyFrom(encoded_message)
