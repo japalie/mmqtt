@@ -40,9 +40,9 @@ def get_args() -> Tuple[argparse.ArgumentParser, argparse.Namespace]:
     # Device Telemetry Data
     parser.add_argument('--battery', type=int, help='Battery level (0-101, 101 = PSU)')
     parser.add_argument('--voltage', type=float, help='Battery Voltage (0.0 - 99.9)')
-    parser.add_argument('--chutil', type=float, help='Channel utilization (0.0 - 100.0)') 
+    parser.add_argument('--chutil', type=float, help='Channel utilization (0.0 - 100.0)')
     parser.add_argument('--airtxutil', type=float, help='Airtime (0.0 - 100.0)')
-    parser.add_argument('--uptime', type=int, help='Uptime in seconds') 
+    parser.add_argument('--uptime', type=int, help='Uptime in seconds')
     parser.add_argument('--telemetry', action='store_true', help='Send Device telemetry from config or overridden by --battery/voltage/chutil/airtxutil/uptime')
     # Position Data
     parser.add_argument('--lat', type=float, help='Latitude coordinate')
@@ -52,7 +52,7 @@ def get_args() -> Tuple[argparse.ArgumentParser, argparse.Namespace]:
     parser.add_argument('--position', action='store_true', help='Send position from config or overridden by --lat/lon/alt')
     # Environment Data
     parser.add_argument('--temperature', type=float, help='Temperature in °C - float')
-    parser.add_argument('--humidity', type=float, help='Relative Humidity (0.0 - 100.0 %RH)')
+    parser.add_argument('--humidity', type=float, help='Relative Humidity (0.0 - 100.0 %%RH)')
     parser.add_argument('--pressure', type=float, help='Barometric Pressure in hPa - float')
     parser.add_argument('--lux', type=float, help='Illuminance in lux - float')
     parser.add_argument('--wind_dir', type=int, help='Wind direction in degrees 360=North')
