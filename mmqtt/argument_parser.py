@@ -26,12 +26,12 @@ def get_args() -> Tuple[argparse.ArgumentParser, argparse.Namespace]:
     parser.add_argument('--node_long_name', type=str, help='Node name')
     parser.add_argument('--node_short_name', type=str, help='Node Short name')
     parser.add_argument('--node_role', type=str, help='Role of Node (CLIENT,REPEATER,ROUTER,TRACKER,SENSOR)')
-    parser.add_argument('--node_hw_model', type=int, help='Hardware model number (255 is PRIVATEHW')
+    parser.add_argument('--node_hw_model', type=int, help='Hardware model number (255 is PRIVATEHW)')
     parser.add_argument('--node_is_unmessagable', type=bool, help='Node is unmessagable (True / False)')
     parser.add_argument('--channel_preset', type=str, help='Channel Name')
     parser.add_argument('--channel_key', type=str_with_empty, help='Channel Encryption Key (Default: AQ==)')
     parser.add_argument('--destination', type=int, help='Destination Node Number (4294967295 is Broadcast)')
-    parser.add_argument('--hop_limit', type=str, help='')
+    parser.add_argument('--hop_limit', type=str, help='Set hop-limit default: 3 (max: 7)')
     # Send Message
     parser.add_argument('--message', action='append', help='Message(s) to send. You can use this multiple times.')
     parser.add_argument('--message-file', type=str, help='Path to a file containing messages, one per line')
@@ -118,7 +118,7 @@ def handle_args() -> argparse.Namespace:
                 short_name = getattr(args, 'node_short_name', None) or getattr(node, 'short_name', None) or None,
                 hw_model = getattr(args, 'node_hw_model', None) or getattr(node, 'hw_model', None) or None,
                 role = getattr(args, 'node_role', None) or getattr(node, 'role', None) or None,
-#                is_unmessagable = role = getattr(args, 'node_is_unmessagable', None) or getattr(node, 'is_unmessagable', None) or None,
+                is_unmessagable = getattr(args, 'node_is_unmessagable', None) or getattr(node, 'is_unmessagable', None) or None,
                 use_config = True,
                 _overrides = _overrides
             )
