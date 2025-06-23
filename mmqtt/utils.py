@@ -35,5 +35,18 @@ def validate_lat_lon_alt(parser, args) -> None:
         if not (args.lat and args.lon):
             parser.error("If you specify --lat, --lon, or --pre, you must specify both --lat and --lon.")
 
+
 def str_with_empty(value):
     return value
+
+
+def float_or_int(value):
+    try:
+        ivalue = int(value)
+        return ivalue
+    except ValueError:
+        try:
+            fvalue = float(value)
+            return fvalue
+        except ValueError:
+            raise argparse.ArgumentTypeError(f"{value} is not a valid int or float")
